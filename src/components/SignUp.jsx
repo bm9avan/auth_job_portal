@@ -1,61 +1,52 @@
-import React , {useState} from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authStore";
+import { useEffect, useRef, useState } from "react";
+import authFn from "../appWrite/AuthFn";
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const firstRef = useRef();
+  const [error, setError] = useState(null);
+  const [btn, setBtn] = useState(null);
+  useEffect(() => firstRef.current.focus(), []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log("Form submitted:", formData);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-    });
-    dispatch(authActions.signUp());
+    setError(null);
+    setBtn("Creating account...");
+    const fd = new FormData(e.target);
+    const formData = Object.fromEntries(fd.entries());
+    authFn
+      .signUp(formData.usn, formData.email, formData.password, formData.name)
+      .then(
+        (data) => {
+          dispatch(authActions.login(data));
+        },
+        (error) => setError(error.message)
+      )
+      .finally(() => setBtn(null));
   };
 
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="firstName">First Name:</label>
-        <input
-          type="text"
-          id="firstName"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="lastName">Last Name:</label>
-        <input
-          type="text"
-          id="lastName"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-        />
+        <label htmlFor="name">Name:</label>
+        <input ref={firstRef} type="text" id="name" name="name" required />
 
         <label htmlFor="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label htmlFor="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" maxLength={15} required />
+
+        <label htmlFor="usn">USN:</label>
         <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
+          type="text"
+          id="usn"
+          name="usn"
+          minLength={10}
+          maxLength={10}
+          required
         />
 
         <label htmlFor="password">Password:</label>
@@ -63,11 +54,13 @@ const SignUp = () => {
           type="password"
           id="password"
           name="password"
-          value={formData.password}
-          onChange={handleChange}
+          minLength={8}
+          required
         />
-
-        <button type="submit">SignUp</button>
+        {error && <div className="error">{error}</div>}
+        <button type="submit" disabled={btn}>
+          {btn ? btn : "SignUp"}
+        </button>
       </form>
     </div>
   );

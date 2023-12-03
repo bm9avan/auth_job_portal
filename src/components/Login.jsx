@@ -1,54 +1,55 @@
-import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authStore";
+import { useEffect, useRef, useState } from "react";
+import authFn from "../appWrite/AuthFn";
 
-const SignUp = () => {
+const Login = () => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const firstRef = useRef();
+  const [error, setError] = useState(null);
+  const [btn, setBtn] = useState(null);
+  useEffect(() => {
+    firstRef.current.focus();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log("Form submitted:", formData);
-    setFormData({
-      email: "",
-      password: "",
-    });
-    dispatch(authActions.login());
+    setError(null);
+    setBtn("Logging in...");
+    const fd = new FormData(e.target);
+    const formData = Object.fromEntries(fd.entries());
+    authFn
+      .login(formData.email, formData.password)
+      .then(
+        (data) => {
+          dispatch(authActions.login(data));
+        },
+        (error) => setError(error.message)
+      )
+      .finally(() => setBtn(null));
   };
 
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
+        <input ref={firstRef} type="email" id="email" name="email" required />
 
         <label htmlFor="password">Password:</label>
         <input
           type="password"
           id="password"
           name="password"
-          value={formData.password}
-          onChange={handleChange}
+          minLength={8}
+          required
         />
-
-        <button type="submit">Login</button>
+        {error && <div className="error">{error}</div>}
+        <button type="submit" disabled={btn}>
+          {btn ? btn : "Login"}
+        </button>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;

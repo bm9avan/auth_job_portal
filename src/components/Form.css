@@ -34,8 +34,14 @@ input {
   border-radius: 4px;
 }
 
+.error {
+  width: 65vw;
+  color: red;
+  text-align: center;
+}
+
 button {
-  background-color: #4caf50;
+  background-color: #355136;
   color: #fff;
   padding: 10px;
   border: none;
@@ -47,8 +53,13 @@ button:hover {
   background-color: #45a049;
 }
 
+button:disabled {
+  cursor: wait;
+}
+
 @media screen and (min-width: 580px) {
-  input {
+  input,
+  .error {
     width: 400px;
   }
 }

@@ -2,20 +2,20 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
   name: "auth",
-  initialState: { a: false },
+  initialState: { status: false, user: null },
   reducers: {
-    signUp(state) {
-      state.a = true;
-    },
-    login(state) {
-      state.a = true;
+    login(state, actions) {
+      // authFn.login(actions.payload.email, actions.payload.password);
+      state.status = true;
+      state.user = { email: actions.payload };
     },
     logout(state) {
-      state.a = false;
+      state.status = false;
+      state.user = null;
     },
   },
 });
 
 const store = configureStore({ reducer: authSlice.reducer });
 export const authActions = authSlice.actions;
-export default store
+export default store;
