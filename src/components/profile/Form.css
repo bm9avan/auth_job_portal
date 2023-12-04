@@ -53,6 +53,14 @@ button:hover {
   background-color: #45a049;
 }
 
+.logout {
+  background-color: rgb(156, 1, 1);
+}
+
+.logout:hover {
+  background-color: red;
+}
+
 button:disabled {
   cursor: wait;
 }
