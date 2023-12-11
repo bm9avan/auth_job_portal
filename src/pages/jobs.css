@@ -107,4 +107,8 @@
   .job-card {
     width: 80vw;
   }
+
+  .message button {
+    display: block;
+  }
 }

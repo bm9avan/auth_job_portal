@@ -16,9 +16,9 @@ const NavBar = () => {
     <>
       {isLoading ? "Loading..." : <Outlet />}
       <nav className="navbar" onClick={toggleMenu}>
-        <NavLink className="navbar-logo" to={"/"}>
+        <div className="navbar-logo" to={"/"}>
           @bm9avan
-        </NavLink>
+        </div>
         <div className={`navbar-links ${showMenu ? "show" : ""}`}>
           <NavLink
             className={({ isActive }) => (isActive ? "active" : "")}
