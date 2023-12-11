@@ -20,12 +20,14 @@ const Login = () => {
     const formData = Object.fromEntries(fd.entries());
     authFn
       .login(formData.email, formData.password)
-      .then(
-        (data) => {
-          window.location.reload();
-        },
-        (error) => setError(error.message)
-      )
+      .then((data) => {
+        // window.location.reload();
+        authFn
+          .getCurrentUser()
+          .then((userData) => dispatch(authActions.login({ userData })))
+          .catch((error) => setError(error.message));
+      })
+      .catch((error) => setError(error.message))
       .finally(() => setBtn(null));
   };
 
