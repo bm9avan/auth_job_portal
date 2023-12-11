@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/authStore";
 import { useEffect, useRef, useState } from "react";
-import authFn from "../../appWrite/AuthFn";
+import authFn from "../../appWrite/authFn";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -17,10 +17,15 @@ const SignUp = () => {
     const fd = new FormData(e.target);
     const formData = Object.fromEntries(fd.entries());
     authFn
-      .signUp(formData.usn, formData.email, formData.password, formData.name)
+      .signUp(
+        formData.usn.toLocaleUpperCase(),
+        formData.email,
+        formData.password,
+        formData.name
+      )
       .then(
         (data) => {
-          dispatch(authActions.login(data));
+          window.location.reload();
         },
         (error) => setError(error.message)
       )

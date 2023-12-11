@@ -2,26 +2,46 @@ import React, { useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import "./NavBar.css";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigation } from "react-router-dom";
 
 const NavBar = () => {
-  const status = useSelector((s) => s.status);
+  const status = useSelector((s) => s.auth.status);
   const [showMenu, setShowMenu] = useState(false);
-
+  const isLoading = useNavigation().state === "loading";
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
   return (
     <>
-      <Outlet />
+      {isLoading ? "Loading..." : <Outlet />}
       <nav className="navbar" onClick={toggleMenu}>
-        <div className="navbar-logo">@bm9avan</div>
+        <NavLink className="navbar-logo" to={"/"}>
+          @bm9avan
+        </NavLink>
         <div className={`navbar-links ${showMenu ? "show" : ""}`}>
-          <NavLink className={({isActive})=>isActive?"active": ""} to="/">Home</NavLink>
-          <NavLink className={({isActive})=>isActive?"active": ""} to="/about">About Us</NavLink>
-          <NavLink className={({isActive})=>isActive?"active": ""} to="/events">Events</NavLink>
-          <NavLink className={({isActive})=>isActive?"active": ""} to="/account">
+          <NavLink
+            className={({ isActive }) => (isActive ? "active" : "")}
+            to="/"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => (isActive ? "active" : "")}
+            to="/about"
+          >
+            About Us
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => (isActive ? "active" : "")}
+            to="/jobs"
+          >
+            Jobs
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => (isActive ? "active" : "")}
+            to="/account"
+          >
             {status ? (
               "My Account"
             ) : (

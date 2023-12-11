@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/authStore";
 import { useEffect, useRef, useState } from "react";
-import authFn from "../../appWrite/AuthFn";
+import authFn from "../../appWrite/authFn";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Login = () => {
       .login(formData.email, formData.password)
       .then(
         (data) => {
-          dispatch(authActions.login(data));
+          window.location.reload();
         },
         (error) => setError(error.message)
       )

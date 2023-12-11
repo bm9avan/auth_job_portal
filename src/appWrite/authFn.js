@@ -17,15 +17,15 @@ class AuthFn {
     return this.login(res.email, password);
   }
 
-  verification() {
-    account.createVerification("https://example.com").then(
-      function (response) {
-        console.log(response);
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
+  emailVerification() {
+    return this.account.createVerification(window.location.origin + "/verify");
+  }
+
+  updateVerification() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const secret = urlParams.get("secret");
+    const userId = urlParams.get("userId");
+    return this.account.updateVerification(userId, secret);
   }
 
   login(email, password) {

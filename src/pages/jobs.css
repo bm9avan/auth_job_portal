@@ -11,12 +11,13 @@
 
 .job-card {
   background-color: #f5f5f5;
+  color: black;
   border-radius: 10px;
   padding: 20px;
   margin: 20px;
+  width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-  width: 300px;
   z-index: -1;
 }
 
@@ -49,11 +50,20 @@
   padding: 8px 15px;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-top: 10px;
+  margin: 10px;
+}
+
+#searchcgpa {
+  width: 50px;
+  text-align: center;
 }
 
 .details-button:hover {
   background-color: darkgreen;
+}
+
+.message button {
+  display: inline;
 }
 
 .job-card a {
@@ -61,4 +71,40 @@
   margin-top: 12px;
   /* margin: 3px;
     padding: 2px; */
+}
+
+.job-card h2 {
+  margin: 40px 0;
+}
+
+.edit,
+.delete {
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  float: right;
+  padding: 2px;
+  background-color: rgb(245, 8, 8);
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.icon {
+  margin-top: 6px;
+}
+
+.edit {
+  background-color: #979ba4;
+}
+
+@media (max-width: 400px) {
+  .job-card {
+    width: 80vw;
+  }
 }

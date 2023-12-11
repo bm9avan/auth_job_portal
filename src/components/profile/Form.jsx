@@ -8,13 +8,13 @@ import Account from "./Account";
 const FormComponent = ({ loading }) => {
   const [isSignUp, setIsSignUp] = useState(false);
 
-  const auth = useSelector((s) => s.status);
+  const auth = useSelector((s) => s.auth.status);
 
   if (loading) {
     return <div>Loading....</div>;
   }
 
-  if (auth) {
+  if (auth && auth !== "check") {
     return <Account />;
   }
 

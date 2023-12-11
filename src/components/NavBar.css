@@ -92,7 +92,7 @@
     top: 70px;
     left: 0;
     width: 92.5vw;
-    background: rgba(0, 0, 0, 0.7);
+    background-color: #333;
     box-shadow: 5px 5px 5px 1px rgba(255, 33, 33, 0.1);
     backdrop-filter: blur(20px);
     border-radius: 10px;

@@ -3,10 +3,14 @@ import Form from "./components/profile/Form";
 import { useDispatch } from "react-redux";
 import { authActions } from "./store/authStore";
 import NavBar from "./components/NavBar";
-import authFn from "./appWrite/AuthFn";
-import { Home, About, Events } from "./pages";
+import authFn from "./appWrite/authFn";
+import { Home, About, Error } from "./pages";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { loader as jobLoader } from "./pages/Events";
+import JobRouter from "./pages/jobPosts/JobRouter";
+import Slug from "./pages/jobPosts/Slug";
+import DisplayJobs from "./pages/jobPosts/DisplayJobs";
+import PostJob from "./pages/jobPosts/PostJob";
+import Verify from "./pages/Verify";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -20,6 +24,13 @@ function App() {
           <NavBar />
         </>
       ),
+      errorElement: (
+        <>
+          <div style={{ height: "4rem" }}></div>
+          <NavBar />
+          <Error />
+        </>
+      ),
       children: [
         {
           index: true,
@@ -27,9 +38,37 @@ function App() {
         },
         { path: "/account", element: <Form loading={loading} /> },
         { path: "/about", element: <About /> },
-        { path: "/events", element: <Events />, loader: jobLoader },
+        {
+          path: "/jobs",
+          id: "jobs",
+          element: (
+            <>
+              <div style={{ height: "4rem" }}></div>
+              <JobRouter />
+            </>
+          ),
+          children: [
+            {
+              index: true,
+              element: <DisplayJobs />,
+            },
+            {
+              path: "me",
+              element: <DisplayJobs me={true} />,
+            },
+            {
+              path: "post",
+              element: <PostJob />,
+            },
+            {
+              path: ":id",
+              element: <Slug />,
+            },
+          ],
+        },
       ],
     },
+    { path: "/verify", element: <Verify /> },
   ]);
 
   useEffect(() => {
@@ -45,11 +84,7 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
